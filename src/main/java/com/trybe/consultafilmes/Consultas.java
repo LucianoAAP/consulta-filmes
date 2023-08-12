@@ -5,6 +5,7 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +27,16 @@ public class Consultas {
    * conjunto associado a esta mesma chave.</p>
    */
   public Set<String> atoresQueInterpretaramSiProprios() {
-    return emptySet(); // TODO: Implementar.
+    Set<String> result = new HashSet<>();
+    filmes.stream().forEach(movie -> {
+      Map<String, Set<String>> actorsByCharacter = movie.atoresPorPersonagem;
+      actorsByCharacter.forEach((character, actors) -> {
+        if (!result.contains(character) && actors.contains(character)) {
+          result.add(character);
+        }
+      });
+    });
+    return result;
   }
 
   /**
