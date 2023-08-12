@@ -4,7 +4,9 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +51,17 @@ public class Consultas {
    * tem o seu nome como um dos itens do campo `diretores` do mesmo filme.</p>
    */
   public List<String> atoresQueAtuaramEmFilmesDoDiretorEmOrdemAlfabetica(String diretor) {
-    return emptyList(); // TODO: Implementar.
+    List<String> result = new ArrayList<>();
+    filmes.stream().forEach(movie -> {
+      Set<String> atores = movie.atores;
+      atores.forEach(actor -> {
+        if (movie.diretores.contains(diretor) && !result.contains(actor)) {
+          result.add(actor);
+        }
+      });
+    });
+    Collections.sort(result);
+    return result;
   }
 
   /**
