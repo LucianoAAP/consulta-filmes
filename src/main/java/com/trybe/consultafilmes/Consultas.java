@@ -53,8 +53,8 @@ public class Consultas {
   public List<String> atoresQueAtuaramEmFilmesDoDiretorEmOrdemAlfabetica(String diretor) {
     List<String> result = new ArrayList<>();
     filmes.stream().forEach(movie -> {
-      Set<String> atores = movie.atores;
-      atores.forEach(actor -> {
+      Set<String> actors = movie.atores;
+      actors.forEach(actor -> {
         if (movie.diretores.contains(diretor) && !result.contains(actor)) {
           result.add(actor);
         }
@@ -73,7 +73,17 @@ public class Consultas {
    * pelo menos um dos itens do campo `diretores` também é um item do campo `atores`.</p>
    */
   public List<Filme> filmesEmQuePeloMenosUmDiretorAtuouMaisRecentesPrimeiro() {
-    return emptyList(); // TODO: Implementar.
+    List<Filme> result = new ArrayList<>();
+    filmes.stream().forEach(movie -> {
+      Set<String> directors = movie.diretores;
+      directors.forEach(director -> {
+        if (!result.contains(movie) && movie.atores.contains(director)) {
+          result.add(movie);
+        }
+      });
+    });
+    Collections.sort(result, (movie1, movie2) -> movie2.anoDeLancamento - movie1.anoDeLancamento);
+    return result;
   }
 
   /**
