@@ -7,10 +7,12 @@ import static java.util.Collections.emptySet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Consultas {
 
@@ -94,6 +96,17 @@ public class Consultas {
    * conjunto de filmes que se encaixam na categoria da chave correspondente.</p>
    */
   public Map<String, Set<Filme>> filmesLancadosNoAnoAgrupadosPorCategoria(int ano) {
-    return emptyMap(); // TODO: Implementar (bônus).
+    Map<String, Set<Filme>> result = new HashMap<>();
+    Collection<Filme> moviesReleasedInThatYear = filmes.stream()
+        .filter(movie -> movie.anoDeLancamento == ano).collect(Collectors.toList());
+    moviesReleasedInThatYear.stream().forEach(movie -> {
+      movie.categorias.forEach(category -> {
+        if (result.get(category) == null) {
+          result.put(category, new HashSet<>());
+        }
+        result.get(category).add(movie);
+      });
+    });
+    return result;
   }
 }
